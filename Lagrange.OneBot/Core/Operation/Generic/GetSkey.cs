@@ -1,19 +1,16 @@
 using System.Text.Json.Nodes;
 using Lagrange.Core;
-using Lagrange.OneBot.Core.Notify;
-using Lagrange.Core.Common.Interface.Api;
 using Lagrange.OneBot.Core.Entity.Action;
+using Lagrange.OneBot.Core.Notify;
 
-namespace Lagrange.OneBot.Core.Operation.Generic
+namespace Lagrange.OneBot.Core.Operation.Generic;
+
+[Operation("get_skey")]
+public class GetSkey(TicketService ticket) : IOperation
 {
-    [Operation("get_skey")]
-    public class GetSkey : IOperation
+    public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
     {
-        public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
-        {
-            var ticketService = new TicketService();
-            var cookies = await ticketService.GetSKey();
-            return new OneBotResult(new JsonObject { { "skey", cookies } }, 0, "ok");
-        }
+        int skey = await ticket.GetSKey();
+        return new OneBotResult(new JsonObject { { "skey", skey } }, 0, "ok");
     }
 }
