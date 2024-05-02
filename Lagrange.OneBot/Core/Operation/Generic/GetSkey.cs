@@ -10,7 +10,7 @@ public class GetSkey(TicketService ticket) : IOperation
 {
     public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
     {
-        int skey = await ticket.GetSKey();
+        string skey = await ticket.GetSKey();
         return new OneBotResult(new JsonObject { { "skey", skey } }, 0, "ok");
     }
 }
