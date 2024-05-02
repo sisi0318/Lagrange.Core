@@ -15,10 +15,7 @@ public class GetCookiesOperation (TicketService ticket) : IOperation
         if (payload?["domain"]?.ToString() is { } domain)
         {
             string cookies = await ticket.GetCookies([domain]);
-            return new OneBotResult(new JsonObject
-            {
-                { "cookies", cookies }
-            }, 0, "ok");
+            return new OneBotResult(new JsonObject { { "cookies", cookies } }, 0, "ok");
         }
 
         throw new Exception();
