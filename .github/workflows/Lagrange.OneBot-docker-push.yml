@@ -9,14 +9,6 @@ on:
       - "Lagrange.OneBot/**"
       - "Lagrange.Core.sln"
       - "LICENSE"
-  pull_request:
-    branches:
-      - master
-    paths:
-      - "Lagrange.Core/**"
-      - "Lagrange.OneBot/**"
-      - "Lagrange.Core.sln"
-      - "LICENSE"
   workflow_dispatch:
 
 jobs:
@@ -34,7 +26,6 @@ jobs:
 
       - name: Login to Github Registry
         uses: docker/login-action@v3
-        if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -56,7 +47,7 @@ jobs:
         with:
           context: .
           file: "Lagrange.OneBot/Resources/Dockerfile"
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64, linux/arm64, linux/arm
