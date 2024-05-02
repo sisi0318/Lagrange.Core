@@ -9,6 +9,6 @@ namespace Lagrange.OneBot.Core.Operation.Generic;
 public class GetSkey : IOperation
 {
     var cookies = await context.GetSKey();
-    return new OneBotResult(new JsonObject { { "skey", cookies] } }, 0, "ok");
+    return new OneBotResult(new JsonObject { { "skey", cookies } }, 0, "ok");
 
 }
