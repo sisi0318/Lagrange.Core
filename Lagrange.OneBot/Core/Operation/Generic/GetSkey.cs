@@ -11,7 +11,8 @@ namespace Lagrange.OneBot.Core.Operation.Generic
     {
         public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
         {
-            var cookies = await context.GetSKey();
+            var ticketService = new TicketService();
+            var cookies = await ticketService.GetSKey();
             return new OneBotResult(new JsonObject { { "skey", cookies } }, 0, "ok");
         }
     }
