@@ -11,6 +11,6 @@ public class GetClientKey : IOperation
     public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
     {
             string clientkey = await context.GetClientKey();
-            return new OneBotResult(new JsonObject { { "clientkey", string } }, 0, "ok");
+            return new OneBotResult(new JsonObject { { "clientkey", clientkey } }, 0, "ok");
     }
 }
