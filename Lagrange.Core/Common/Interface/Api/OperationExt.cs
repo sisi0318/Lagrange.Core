@@ -1,4 +1,5 @@
 using Lagrange.Core.Common.Entity;
+using Lagrange.Core.Interface.Ev
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
 
