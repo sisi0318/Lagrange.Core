@@ -1,5 +1,6 @@
 using Lagrange.Core.Common.Entity;
-using Lagrange.Core.Interface.Ev;
+using Lagrange.Core.Internal.Event.System;
+using Lagrange.Core.Internal.Service.System;
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
 
@@ -109,8 +110,8 @@ public static class OperationExt
     public static Task<bool> GroupTransfer(this BotContext bot, uint groupUin, uint targetUin)
         => bot.ContextCollection.Business.OperationLogic.GroupTransfer(groupUin, targetUin);
     
-    public static Task<bool> RequestFriend(this BotContext bot, uint targetUin, string question = "", string message = "")
-        => bot.ContextCollection.Business.OperationLogic.RequestFriend(targetUin, question, message);
+    public static Task<bool> RequestFriend(this BotContext bot, uint targetUin, string message = "", string question = "")
+        => bot.ContextCollection.Business.OperationLogic.RequestFriend(targetUin, message, question);
 
     public static Task<bool> Like(this BotContext bot, uint targetUin, uint count = 1)
         => bot.ContextCollection.Business.OperationLogic.Like(targetUin, count);
@@ -173,5 +174,13 @@ public static class OperationExt
     
     public static Task<bool> FriendPoke(this BotContext bot, uint friendUin)
         => bot.ContextCollection.Business.OperationLogic.FriendPoke(friendUin);
+
+    public static async Task<List<string>> FetchRkey(this BotContext bot)
+    {
+        var fetchRkeyEvent = FetchRKeyEvent.Create();
+        var events = await bot.ContextCollection.Business.SendEvent(fetchRkeyEvent);
+        return ((FetchRKeyEvent)events[0]).RKeys;
+    }
+    
 
 }
