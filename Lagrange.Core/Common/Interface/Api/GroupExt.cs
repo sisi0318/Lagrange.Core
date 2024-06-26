@@ -42,8 +42,8 @@ public static class GroupExt
     public static Task<bool> SetGroupAdmin(this BotContext bot, uint groupUin, uint targetUin, bool isAdmin)
         => bot.ContextCollection.Business.OperationLogic.SetGroupAdmin(groupUin, targetUin, isAdmin);
 
-    public static Task<bool> SetGroupBot(this BotContext bot, uint groupUin, uint On, uint targetUin)
-        => bot.ContextCollection.Business.OperationLogic.SetGroupBot(groupUin, On, targetUin);
+    public static Task<bool> SetGroupBot(this BotContext bot, uint targetUin, uint On, uint groupUin)
+        => bot.ContextCollection.Business.OperationLogic.SetGroupBot(targetUin, On, groupUin);
     
     public static Task<bool> RenameGroupMember(this BotContext bot, uint groupUin, uint targetUin, string targetName)
         => bot.ContextCollection.Business.OperationLogic.RenameGroupMember(groupUin, targetUin, targetName);
