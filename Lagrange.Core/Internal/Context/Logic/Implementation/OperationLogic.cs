@@ -76,7 +76,7 @@ internal class OperationLogic : LogicBase
         return events.Count != 0 && ((GroupSetAdminEvent)events[0]).ResultCode == 0;
     }
 
-        public async Task<bool> SetGroupBot(uint groupUin, uint targetUin, uint On)
+        public async Task<bool> SetGroupBot(uint groupUin, uint On, uint targetUin)
     {
         // string? uid = await Collection.Business.CachingLogic.ResolveUid(groupUin, targetUin);
         // if (uid == null) return false;
