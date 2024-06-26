@@ -6,6 +6,8 @@ using Lagrange.Core.Internal.Event.Message;
 using Lagrange.Core.Internal.Event.System;
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
+using Microsoft.Extensions.Logging;
+
 
 namespace Lagrange.Core.Internal.Context.Logic.Implementation;
 

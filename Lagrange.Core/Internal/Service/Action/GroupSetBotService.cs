@@ -11,7 +11,7 @@ using ProtoBuf;
 namespace Lagrange.Core.Internal.Service.Action;
 
 [EventSubscribe(typeof(GroupSetBotEvent))]
-[Service("OidbSvcTrpcTcp.0x907D_1")]
+[Service("OidbSvcTrpcTcp.0x907d_1")]
 internal class GroupSetBotService : BaseService<GroupSetBotEvent>
 {
     protected override bool Build(GroupSetBotEvent input, BotKeystore keystore, BotAppInfo appInfo, BotDeviceInfo device,
