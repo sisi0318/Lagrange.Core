@@ -4,11 +4,11 @@ internal class GroupSetBotEvent : ProtocolEvent
 {
     public uint Uin { get; set; }
     
-    public bool On { get; set; } = "";
+    public bool On { get; set; }
     
     public uint GroupUin { get; set; }
 
-    private GroupSetBotEvent(uint Uin, uint On, uint GroupUin) : base(0)
+    private GroupSetBotEvent(uint Uin, bool On, uint GroupUin) : base(0)
     {
         Uin = groupUin;
         On = On;
