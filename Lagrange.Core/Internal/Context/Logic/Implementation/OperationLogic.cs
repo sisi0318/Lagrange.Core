@@ -83,6 +83,7 @@ internal class OperationLogic : LogicBase
         
         var muteBotEvent = GroupSetBotEvent.Create(targetUin, On, groupUin);
         var events = await Collection.Business.SendEvent(muteBotEvent);
+        logger.LogInformation(muteBotEvent);
         return events.Count != 0 && ((GroupSetBotEvent)events[0]).ResultCode == 0;
     }
     
