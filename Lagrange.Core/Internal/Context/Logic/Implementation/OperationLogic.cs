@@ -75,6 +75,16 @@ internal class OperationLogic : LogicBase
         var events = await Collection.Business.SendEvent(muteGroupMemberEvent);
         return events.Count != 0 && ((GroupSetAdminEvent)events[0]).ResultCode == 0;
     }
+
+        public async Task<bool> SetGroupBot(uint groupUin, uint targetUin, int On)
+    {
+        // string? uid = await Collection.Business.CachingLogic.ResolveUid(groupUin, targetUin);
+        // if (uid == null) return false;
+        
+        var muteBotEvent = GroupSetBotEvent.Create(targetUin, On, groupUin);
+        var events = await Collection.Business.SendEvent(muteBotEvent);
+        return events.Count != 0 && ((GroupSetBotEvent)events[0]).ResultCode == 0;
+    }
     
     public async Task<bool> RenameGroupMember(uint groupUin, uint targetUin, string targetName)
     {
