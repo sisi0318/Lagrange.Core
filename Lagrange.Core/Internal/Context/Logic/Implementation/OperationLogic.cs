@@ -6,7 +6,6 @@ using Lagrange.Core.Internal.Event.Message;
 using Lagrange.Core.Internal.Event.System;
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
-using Microsoft.Extensions.Logging;
 
 
 namespace Lagrange.Core.Internal.Context.Logic.Implementation;
@@ -85,7 +84,6 @@ internal class OperationLogic : LogicBase
         
         var muteBotEvent = GroupSetBotEvent.Create(targetUin, On, groupUin);
         var events = await Collection.Business.SendEvent(muteBotEvent);
-        logger.LogInformation(muteBotEvent);
         return events.Count != 0 && ((GroupSetBotEvent)events[0]).ResultCode == 0;
     }
     
