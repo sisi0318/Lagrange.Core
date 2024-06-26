@@ -9,5 +9,5 @@ public class OneBotSetGroupBot
     
     [JsonPropertyName("bot_id")] public uint BotId { get; set; }
     
-    [JsonPropertyName("enable")] public bool Enable { get; set; }
+    [JsonPropertyName("enable")] public uint Enable { get; set; }
 }
