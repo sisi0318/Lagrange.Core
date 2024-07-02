@@ -11,7 +11,6 @@ internal class GroupSetBotEvent : ProtocolEvent
     private GroupSetBotEvent(uint Uin, uint On, uint GroupUin) : base(0)
     {
         Uin = Uin;
-        type = 2;
         On = On;
         GroupUin = GroupUin;
     }
