@@ -20,6 +20,7 @@ internal class GroupSetBotService : BaseService<GroupSetBotEvent>
         var packet = new OidbSvcTrpcTcpBase<OidbSvcTrpcTcp0x907D_1>(new OidbSvcTrpcTcp0x907D_1
         {
             Uin = input.Uin,
+            type = 2,
             On = input.On,
             GroupUin = input.GroupUin
         });

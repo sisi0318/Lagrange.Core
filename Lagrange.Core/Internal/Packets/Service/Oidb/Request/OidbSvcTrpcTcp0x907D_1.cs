@@ -11,7 +11,7 @@ internal class OidbSvcTrpcTcp0x907D_1
 {
     [ProtoMember(1)] public uint Uin { get; set; }
     
-    [ProtoMember(2)] public int type { get; set; } = 2;
+    [ProtoMember(2)] public uint type { get; set; } = 2;
     
     [ProtoMember(3)] public uint On { get; set; } = 1;
 

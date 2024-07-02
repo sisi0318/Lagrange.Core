@@ -72,7 +72,7 @@ internal partial class ServiceContext : ContextBase
             if (success && binary != null)
             {
                 result.Add(new SsoPacket(attribute.PacketType, attribute.Command, (uint)_sequenceProvider.GetNewSequence(), binary));
-                Collection.Log.LogDebug(Tag, $"Outgoing Protobuf {binary.Hex()}");
+
                 
                 if (extraPackets != null)
                 {
