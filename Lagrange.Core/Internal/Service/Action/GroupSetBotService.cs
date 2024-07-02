@@ -25,6 +25,8 @@ internal class GroupSetBotService : BaseService<GroupSetBotEvent>
             GroupUin = input.GroupUin
         });
         Console.WriteLine($"botid: {input.BotId}");
+        Console.WriteLine($"botid: {input.On}");
+        Console.WriteLine($"botid: {input.GroupUin}");
         output = packet.Serialize();
         extraPackets = null;
         return true;
