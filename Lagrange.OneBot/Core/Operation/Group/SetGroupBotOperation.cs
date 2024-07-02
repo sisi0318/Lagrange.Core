@@ -18,7 +18,7 @@ public class SetGroupBotOperation : IOperation
         {
             bool _ = await context.SetGroupBot(message.BotId, message.Enable , message.GroupId);
 
-            return new OneBotResult(_, 0, "ok");
+            return new OneBotResult(message.BotId, 0, "ok");
         }
 
         throw new Exception();
