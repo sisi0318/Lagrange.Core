@@ -72,6 +72,7 @@ internal partial class ServiceContext : ContextBase
             if (success && binary != null)
             {
                 result.Add(new SsoPacket(attribute.PacketType, attribute.Command, (uint)_sequenceProvider.GetNewSequence(), binary));
+                Collection.Log.LogDebug(Tag, $"Outgoing Protobuf {binary.Hex()}");
                 
                 if (extraPackets != null)
                 {
@@ -81,7 +82,6 @@ internal partial class ServiceContext : ContextBase
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {(uint)_sequenceProvider.GetNewSequence()}");
-                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {result}");
             }
         }
 
