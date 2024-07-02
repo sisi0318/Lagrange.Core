@@ -78,7 +78,10 @@ internal partial class ServiceContext : ContextBase
                     result.AddRange(extraPackets.Select(extra => new SsoPacket(attribute.PacketType, attribute.Command, (uint)_sequenceProvider.GetNewSequence(), extra)));
                 }
                 
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {(uint)_sequenceProvider.GetNewSequence()}");
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {binary}");
             }
         }
 
