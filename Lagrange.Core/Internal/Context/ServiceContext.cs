@@ -82,8 +82,6 @@ internal partial class ServiceContext : ContextBase
                 Collection.Log.LogDebug(Tag, $"Outgoing type: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
                 Collection.Log.LogDebug(Tag, $"Outgoing seq: {(uint)_sequenceProvider.GetNewSequence()}");
-                var binaryData = binary.Data;
-                Collection.Log.LogDebug(Tag, $"Outgoing protobuf: {binaryData.Hex()}");
             }
         }
 
