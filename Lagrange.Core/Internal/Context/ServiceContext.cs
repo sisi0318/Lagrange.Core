@@ -81,7 +81,8 @@ internal partial class ServiceContext : ContextBase
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {(uint)_sequenceProvider.GetNewSequence()}");
-                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {binary}");
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {result}");
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {extra}");
             }
         }
 
