@@ -82,6 +82,9 @@ internal class OperationLogic : LogicBase
         // string? uid = await Collection.Business.CachingLogic.ResolveUid(groupUin, targetUin);
         // if (uid == null) return false;
         
+        Console.WriteLine($"SetGroupBot botid: {BotId}");
+        Console.WriteLine($"SetGroupBot On: {On}");
+        Console.WriteLine($"SetGroupBot GroupUin: {groupUin}");
         var muteBotEvent = GroupSetBotEvent.Create(BotId, On, groupUin);
         var events = await Collection.Business.SendEvent(muteBotEvent);
         return events.Count != 0 && ((GroupSetBotEvent)events[0]).ResultCode == 0;
