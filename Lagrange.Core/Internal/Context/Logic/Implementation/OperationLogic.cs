@@ -77,12 +77,12 @@ internal class OperationLogic : LogicBase
         return events.Count != 0 && ((GroupSetAdminEvent)events[0]).ResultCode == 0;
     }
 
-        public async Task<bool> SetGroupBot(uint targetUin , uint On , uint groupUin)
+    public async Task<bool> SetGroupBot(uint BotId , uint On , uint groupUin)
     {
         // string? uid = await Collection.Business.CachingLogic.ResolveUid(groupUin, targetUin);
         // if (uid == null) return false;
         
-        var muteBotEvent = GroupSetBotEvent.Create(targetUin, On, groupUin);
+        var muteBotEvent = GroupSetBotEvent.Create(BotId, On, groupUin);
         var events = await Collection.Business.SendEvent(muteBotEvent);
         return events.Count != 0 && ((GroupSetBotEvent)events[0]).ResultCode == 0;
     }

@@ -9,7 +9,7 @@ namespace Lagrange.Core.Internal.Packets.Service.Oidb.Request;
 [OidbSvcTrpcTcp(0x907D, 1)]
 internal class OidbSvcTrpcTcp0x907D_1
 {
-    [ProtoMember(1)] public uint Uin { get; set; }
+    [ProtoMember(1)] public uint BotId { get; set; }
     
     [ProtoMember(2)] public uint type { get; set; } = 2;
     
