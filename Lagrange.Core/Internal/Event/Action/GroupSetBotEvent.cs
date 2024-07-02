@@ -10,7 +10,7 @@ internal class GroupSetBotEvent : ProtocolEvent
 
     private GroupSetBotEvent(uint BotId, uint On, uint GroupUin) : base(0)
     {
-        Uin = BotId;
+        BotId = BotId;
         On = On;
         GroupUin = GroupUin;
     }
