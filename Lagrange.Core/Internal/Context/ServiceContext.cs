@@ -79,9 +79,11 @@ internal partial class ServiceContext : ContextBase
                     result.AddRange(extraPackets.Select(extra => new SsoPacket(attribute.PacketType, attribute.Command, (uint)_sequenceProvider.GetNewSequence(), extra)));
                 }
                 
-                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.PacketType}");
+                Collection.Log.LogDebug(Tag, $"Outgoing type: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
-                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {(uint)_sequenceProvider.GetNewSequence()}");
+                Collection.Log.LogDebug(Tag, $"Outgoing seq: {(uint)_sequenceProvider.GetNewSequence()}");
+                var binaryData = binary.Data;
+                Collection.Log.LogDebug(Tag, $"Outgoing protobuf: {binaryData.Hex()}");
             }
         }
 
@@ -95,11 +97,14 @@ internal partial class ServiceContext : ContextBase
     {
         var result = new List<ProtocolEvent>();
         var payload = packet.Payload.ReadBytes(Prefix.Uint32 | Prefix.WithPrefix);
+
+        Collection.Log.LogDebug(Tag, $"Command: {packet.Command}");
+        Collection.Log.LogDebug(Tag, $"Payload: {payload.Hex()}");
         
         if (!_services.TryGetValue(packet.Command, out var service))
         {
             Collection.Log.LogWarning(Tag, $"Unsupported SSOFrame Received: {packet.Command}");
-            Collection.Log.LogDebug(Tag, $"Unsuccessful SSOFrame Payload: {payload.Hex()}");
+            // Collection.Log.LogDebug(Tag, $"Unsuccessful SSOFrame Payload: {payload.Hex()}");
             return result; // 没找到 滚蛋吧
         }
 
