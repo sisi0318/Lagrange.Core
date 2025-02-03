@@ -78,7 +78,7 @@ public static class HostApplicationBuilderExtension
     public static HostApplicationBuilder ConfigureOneBot(this HostApplicationBuilder builder)
     {
         builder.Services.AddOptions()
-            .AddSingleton(services => // Realm Configuration
+            .AddSingleton(services => // Realm Helper
             {
                 var configuration = services.GetRequiredService<IConfiguration>();
 
