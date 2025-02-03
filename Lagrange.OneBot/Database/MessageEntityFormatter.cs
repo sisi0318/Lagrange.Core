@@ -166,6 +166,12 @@ public class MessageEntityFormatter : IMessagePackFormatter<IMessageEntity?>
                 MessagePackSerializer.Serialize(ref writer, (XmlEntity)value, options);
                 break;
             }
+            case OldFaceEntity:
+            {
+                writer.Write((byte)MessageType.OldFace);
+                MessagePackSerializer.Serialize(ref writer, (OldFaceEntity)value, options);
+                break;
+            }
             case null:
             {
                 break;
