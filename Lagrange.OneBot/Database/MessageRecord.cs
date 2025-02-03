@@ -47,6 +47,9 @@ public partial class MessageRecord : IRealmObject
 
     public byte[] Entities { get; set; }
 
+    public int AppidInt { get; set; }
+    public uint Appid { get => (uint)AppidInt; set => AppidInt = (int)value; }
+
     public static int CalcMessageHash(ulong msgId, uint seq)
     {
         return ((ushort)seq << 16) | (ushort)msgId;
@@ -67,7 +70,8 @@ public partial class MessageRecord : IRealmObject
             MessageType.Friend => chain.TargetUin,
             _ => throw new NotImplementedException(),
         },
-        Entities = MessagePackSerializer.Serialize<List<IMessageEntity>>(chain, OPTIONS)
+        Entities = MessagePackSerializer.Serialize<List<IMessageEntity>>(chain, OPTIONS),
+        Appid = chain.Appid
     };
 
     public static implicit operator MessageChain(MessageRecord record)
