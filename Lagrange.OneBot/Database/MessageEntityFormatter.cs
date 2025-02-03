@@ -32,6 +32,7 @@ public class MessageEntityFormatter : IMessagePackFormatter<IMessageEntity?>
             MessageType.Text => MessagePackSerializer.Deserialize<TextEntity>(ref reader, options),
             MessageType.Video => MessagePackSerializer.Deserialize<VideoEntity>(ref reader, options),
             MessageType.Xml => MessagePackSerializer.Deserialize<XmlEntity>(ref reader, options),
+            MessageType.OldFace => MessagePackSerializer.Deserialize<OldFaceEntity>(ref reader, options),
             _ => null,
         };
     }
