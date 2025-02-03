@@ -166,7 +166,14 @@ public class MessageEntityFormatter : IMessagePackFormatter<IMessageEntity?>
                 MessagePackSerializer.Serialize(ref writer, (XmlEntity)value, options);
                 break;
             }
-            default: { break; }
+            case null:
+            {
+                break;
+            }
+            default:
+            {
+                throw new NotSupportedException($"Unknown `IMessageEntity` type({value?.GetType()}) not handled!");
+            }
         }
     }
 }
@@ -174,6 +181,8 @@ public class MessageEntityFormatter : IMessagePackFormatter<IMessageEntity?>
 /// <summary>
 /// DO NOT MODIFY THE ENUMERATION VALUE!
 /// IT WILL CAUSE THE DATABASE TO BECOME INVALID!
+/// 
+/// Each newly added IMessageEntity should be given a sequence number
 /// </summary>
 file enum MessageType
 {
@@ -198,4 +207,5 @@ file enum MessageType
     Text = 18,
     Video = 19,
     Xml = 20,
+    OldFace = 21,
 }
