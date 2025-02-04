@@ -5,6 +5,7 @@ using Lagrange.OneBot.Core.Network;
 using Lagrange.OneBot.Core.Network.Service;
 using Lagrange.OneBot.Core.Notify;
 using Lagrange.OneBot.Core.Operation;
+using Lagrange.OneBot.Database;
 using Lagrange.OneBot.Message;
 using Lagrange.OneBot.Utility;
 using Microsoft.Extensions.Configuration;
@@ -86,7 +87,13 @@ public static class HostApplicationBuilderExtension
                 if (!Directory.Exists(prefix)) Directory.CreateDirectory(prefix);
                 string path = Path.GetFullPath(Path.Join(prefix, ".realm"));
 
-                return new RealmConfiguration(path);
+                return new RealmConfiguration(path)
+                {
+                    // Increase one version above upstream to ensure migration
+                    // When adding or subtracting MessageRecord fields, you need to increase 1
+                    // In addition to this case, you need to write `MigrationCallback`
+                    SchemaVersion = 2,
+                };
             })
             .AddSingleton<RealmHelper>()
 
