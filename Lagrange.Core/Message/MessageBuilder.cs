@@ -84,6 +84,14 @@ public sealed class MessageBuilder
         return this;
     }
 
+        public MessageBuilder Text(string text, string title, string desc, string picurl)
+    {
+        var textEntity = new TextEntity(text, title, desc, picurl);
+        _chain.Add(textEntity);
+
+        return this;
+    }
+
     /// <summary>
     /// Add a mention entity to the message chain (@someone)
     /// </summary>
