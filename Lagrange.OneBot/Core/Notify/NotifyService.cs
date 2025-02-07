@@ -51,12 +51,28 @@ public sealed class NotifyService(BotContext bot, ILogger<NotifyService> logger,
         {
             logger.LogInformation(@event.ToString());
 
-            var requests = await bot.FetchGroupRequests();
-            if (requests?.FirstOrDefault(x => @event.GroupUin == x.GroupUin && @event.InvitorUin == x.InvitorMemberUin) is { } request)
+            ulong? sequence = @event.Sequence;
+            string comment = string.Empty;
+            uint type = 2;
+            if (sequence == null) // received by msg
             {
-                string flag = $"{request.Sequence}-{request.GroupUin}-{(uint)request.EventType}";
-                await service.SendJsonAsync(new OneBotGroupRequest(bot.BotUin, @event.InvitorUin, @event.GroupUin, "invite", request.Comment, flag));
+                var requests = await bot.FetchGroupRequests();
+                if (requests == null) return;
+
+                var request = requests.FirstOrDefault(r =>
+                {
+                    return r.EventType == BotGroupRequest.Type.SelfInvitation
+                        && r.GroupUin == @event.GroupUin
+                        && r.InvitorMemberUin == @event.InvitorUin;
+                });
+                if (request == null) return;
+
+                sequence = request.Sequence;
+                if (request.Comment != null) comment = request.Comment;
             }
+
+            string flag = $"{sequence}-{@event.GroupUin}-{type}";
+            await service.SendJsonAsync(new OneBotGroupRequest(bot.BotUin, @event.InvitorUin, @event.GroupUin, "invite", comment, flag));
         };
 
         bot.Invoker.OnGroupJoinRequestEvent += async (_, @event) =>
@@ -149,12 +165,23 @@ public sealed class NotifyService(BotContext bot, ILogger<NotifyService> logger,
             logger.LogInformation(@event.ToString());
 
             var sequence = realm.Do(realm => realm.All<MessageRecord>()
-                .First(record => record.TypeInt == (int)MessageType.Friend
+                .FirstOrDefault(record => record.TypeInt == (int)MessageType.Friend
                     && record.FromUinLong == @event.FriendUin
                     && record.ClientSequenceLong == @event.ClientSequence
                     && record.MessageIdLong == (0x01000000L << 32 | @event.Random)
-                )
+                )?
                 .Sequence);
+            
+            if (sequence == null)
+            {
+                logger.LogInformation(
+                    "Unable to find the corresponding message using Uin: {} and Sequence: {}",
+                    @event.FriendUin,
+                    @event.ClientSequence
+                );
+
+                return;
+            }
 
             await service.SendJsonAsync(new OneBotFriendRecall(bot.BotUin)
             {
