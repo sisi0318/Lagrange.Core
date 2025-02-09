@@ -76,20 +76,6 @@ internal class OperationLogic : LogicBase
         ulong messageId = chain.MessageId;
         var body = new MessageBody { RichText = Serializer.Deserialize<RichText>(new MemoryStream(hexMessageElems)) };
         
-        var test = new Elem[]
-        {
-            new() { Text = new Text {
-                Str = "111",
-            } },
-            new() { Text = new Text {
-                Str = "222",
-            } }
-        };
-        var stream = new MemoryStream();
-        Serializer.Serialize(stream, test);
-        var a = stream.ToArray().Hex();
-        Console.WriteLine(a);
-        
         var sendMessageEvent = SendMessageEvent.Create(chain, body);
         var events = await Collection.Business.SendEvent(sendMessageEvent);
         if (events.Count == 0) return new MessageResult { Result = 9057 };
