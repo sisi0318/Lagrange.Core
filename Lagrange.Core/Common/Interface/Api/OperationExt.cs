@@ -55,6 +55,9 @@ public static class OperationExt
     
     internal static Task<MessageResult> SendMessage(this BotContext bot, MessageChain chain, PushMsgBody pushMsgBody)
         => bot.ContextCollection.Business.OperationLogic.SendMessage(chain, pushMsgBody);
+    
+    internal static Task<MessageResult> SendMessage(this BotContext bot, MessageChain chain, byte[] hexMessageElems)
+        => bot.ContextCollection.Business.OperationLogic.SendMessage(chain, hexMessageElems);
 
     /// <summary>
     /// Recall the group message from Bot itself by <see cref="MessageResult"/>

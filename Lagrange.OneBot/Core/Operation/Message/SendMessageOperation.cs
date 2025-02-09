@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using Lagrange.Core;
 using Lagrange.Core.Common.Interface.Api;
 using Lagrange.Core.Message;
+using Lagrange.Core.Utility.Extension;
 using Lagrange.OneBot.Core.Entity.Action;
 using Lagrange.OneBot.Core.Entity.Action.Response;
 using Lagrange.OneBot.Core.Operation.Converters;
@@ -18,15 +19,18 @@ public sealed class SendMessageOperation(MessageCommon common, RealmHelper realm
 {
     public async Task<OneBotResult> HandleOperation(BotContext context, JsonNode? payload)
     {
-        var chain = payload.Deserialize<OneBotMessageBase>(SerializerOptions.DefaultOptions) switch
+        var (chain, body) = payload.Deserialize<OneBotMessageBase>(SerializerOptions.DefaultOptions) switch
         {
-            OneBotMessage message => common.ParseChain(message).Build(),
-            OneBotMessageSimple messageSimple => common.ParseChain(messageSimple).Build(),
-            OneBotMessageText messageText => common.ParseChain(messageText).Build(),
+            OneBotMessage message => (common.ParseChain(message).Build(), []),
+            OneBotMessageSimple messageSimple => (common.ParseChain(messageSimple).Build(), []),
+            OneBotMessageText messageText => (common.ParseChain(messageText).Build(), messageText.HexContent ? messageText.Messages.UnHex() : []),
             _ => throw new Exception()
         };
-
-        var result = await context.SendMessage(chain);
+        
+        var result = body.Length > 0
+            ? await context.SendMessage(chain, body)
+            : await context.SendMessage(chain);
+        
 
         if (result.Result != 0) return new OneBotResult(null, (int)result.Result, "failed");
         if (result.Sequence == null || result.Sequence == 0) return new OneBotResult(null, 9000, "failed");
