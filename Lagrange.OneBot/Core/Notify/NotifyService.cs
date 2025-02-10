@@ -171,15 +171,8 @@ public sealed class NotifyService(BotContext bot, ILogger<NotifyService> logger,
                     && record.MessageIdLong == (0x01000000L << 32 | @event.Random)
                 )?
                 .Sequence);
-            
-            if (sequence == null)
-            {
-                logger.LogInformation(
-                    "Unable to find the corresponding message using Uin: {} and Sequence: {}",
-                    @event.FriendUin,
-                    @event.ClientSequence
-                );
-
+            if (sequence == null) {
+                logger.LogWarning("Unable to find the {} message sent by {}", @event.ClientSequence, @event.FriendUin);
                 return;
             }
 
