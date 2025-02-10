@@ -11,7 +11,6 @@ using Lagrange.Core.Message.Entity;
 using Lagrange.Core.Utility.Extension;
 using Lagrange.Core.Internal.Packets.Message.Component;
 using Lagrange.Core.Internal.Packets.Message.Element;
-using Lagrange.Core.Internal.Packets.Message.Element;
 using Lagrange.Core.Internal.Packets.Message.Element.Implementation;
 using ProtoBuf;
 
