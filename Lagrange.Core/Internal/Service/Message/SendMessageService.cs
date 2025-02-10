@@ -17,6 +17,7 @@ internal class SendMessageService : BaseService<SendMessageEvent>
     {
         var packet = MessagePacker.Build(input.Chain, keystore.Uid ?? throw new Exception("No UID found in keystore"));
         if (input.PushMsgBody != null) packet.Body = input.PushMsgBody.Body;
+        if (input.MessageBody != null) packet.Body = input.MessageBody;
         output = packet.Serialize();
         extraPackets = null;
         return true;

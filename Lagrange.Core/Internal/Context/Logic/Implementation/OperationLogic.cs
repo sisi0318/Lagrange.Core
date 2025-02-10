@@ -9,6 +9,11 @@ using Lagrange.Core.Internal.Packets.Service.Highway;
 using Lagrange.Core.Message;
 using Lagrange.Core.Message.Entity;
 using Lagrange.Core.Utility.Extension;
+using Lagrange.Core.Internal.Packets.Message.Component;
+using Lagrange.Core.Internal.Packets.Message.Element;
+using Lagrange.Core.Internal.Packets.Message.Element;
+using Lagrange.Core.Internal.Packets.Message.Element.Implementation;
+using ProtoBuf;
 
 namespace Lagrange.Core.Internal.Context.Logic.Implementation;
 
@@ -56,6 +61,22 @@ internal class OperationLogic : LogicBase
         ulong messageId = chain.MessageId;
         
         var sendMessageEvent = SendMessageEvent.Create(chain, pushMsgBody);
+        var events = await Collection.Business.SendEvent(sendMessageEvent);
+        if (events.Count == 0) return new MessageResult { Result = 9057 };
+        
+        var result = ((SendMessageEvent)events[0]).MsgResult;
+        result.ClientSequence = clientSeq;
+        result.MessageId = messageId;
+        return result;
+    }
+    
+    public async Task<MessageResult> SendMessage(MessageChain chain, byte[] hexMessageElems)
+    {
+        uint clientSeq = chain.ClientSequence;
+        ulong messageId = chain.MessageId;
+        var body = new MessageBody { RichText = Serializer.Deserialize<RichText>(new MemoryStream(hexMessageElems)) };
+        
+        var sendMessageEvent = SendMessageEvent.Create(chain, body);
         var events = await Collection.Business.SendEvent(sendMessageEvent);
         if (events.Count == 0) return new MessageResult { Result = 9057 };
         

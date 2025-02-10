@@ -86,6 +86,8 @@ public partial class MessageCommon
         var builder = message.MessageType == "private" || message.GroupId == null
             ? MessageBuilder.Friend(message.UserId ?? 0)
             : MessageBuilder.Group(message.GroupId.Value);
+        
+        if (message.HexContent) return builder;
 
         if (message.AutoEscape == true)
         {
