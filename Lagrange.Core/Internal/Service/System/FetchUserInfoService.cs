@@ -69,13 +69,13 @@ internal class FetchUserInfoService : BaseService<FetchUserInfoEvent>
                 Uin = input.Uin,
                 Field2 = 0,
                 Keys = _keys,
-            }, 0xfe1, 2, false, true).Serialize()
+            }, 0xfe1, 8, false, true).Serialize()
             : new OidbSvcTrpcTcpBase<OidbSvcTrpcTcp0xFE1_2Uid>(new OidbSvcTrpcTcp0xFE1_2Uid
             {
                 Uid = input.Uid,
                 Field2 = 0,
                 Keys = _keys
-            }, 0xfe1, 2).Serialize();
+            }, 0xfe1, 8).Serialize();
         extraPackets = null;
         return true;
     }
