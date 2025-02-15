@@ -103,7 +103,6 @@ public static class HostApplicationBuilderExtension
 
                 return new RealmConfiguration(path)
                 {
-                    // Should be higher than upstream
                     SchemaVersion = 2,
                     MigrationCallback = null,
                 };

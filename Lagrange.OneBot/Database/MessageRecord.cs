@@ -1,3 +1,4 @@
+using Lagrange.Core.Common.Entity;
 using Lagrange.Core.Message;
 using MessagePack;
 using MessagePack.Resolvers;
@@ -62,6 +63,8 @@ public partial class MessageRecord : IRealmObject
     public long ToUinLong { get; set; }
     public ulong ToUin { get => (ulong)ToUinLong; set => ToUinLong = (long)value; }
 
+    public MessageStyleRecord? Style { get; set; }
+
     public byte[] Entities { get; set; }
 
     public int AppidInt { get; set; }
@@ -88,6 +91,7 @@ public partial class MessageRecord : IRealmObject
             MessageType.Friend => chain.TargetUin,
             _ => throw new NotImplementedException(),
         },
+        Style = chain.Style != null ? (MessageStyleRecord)chain.Style : null,
         Entities = MessagePackSerializer.Serialize<List<IMessageEntity>>(chain, OPTIONS),
         Appid = chain.Appid
     };
@@ -120,6 +124,7 @@ public partial class MessageRecord : IRealmObject
 
         chain.Time = record.Time.DateTime;
         chain.Appid = record.Appid;
+        chain.Style = record.Style != null ? (MessageStyle)record.Style : null;
 
         return chain;
     }

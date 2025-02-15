@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Lagrange.Core;
+using Lagrange.Core.Common.Entity;
 using Lagrange.Core.Message;
 using Lagrange.Core.Utility.Extension;
 using Lagrange.OneBot.Core.Entity;
@@ -40,7 +41,7 @@ public partial class MessageCommon
     public MessageBuilder ParseFakeChain(OneBotFakeNode message)
     {
         var builder = MessageBuilder.Friend(uint.Parse(message.Uin)).FriendName(message.Name);
-        BuildMessages(builder, message.Content);
+        BuildMessages(builder, message.Content, message.MessageStyle);
 
         return builder;
     }
@@ -48,7 +49,7 @@ public partial class MessageCommon
     public MessageBuilder ParseFakeChain(OneBotFakeNodeSimple message)
     {
         var builder = MessageBuilder.Friend(uint.Parse(message.Uin)).FriendName(message.Name);
-        BuildMessages(builder, message.Content);
+        BuildMessages(builder, message.Content, message.MessageStyle);
 
         return builder;
     }
@@ -56,7 +57,7 @@ public partial class MessageCommon
     public MessageBuilder ParseFakeChain(OneBotFakeNodeText message)
     {
         var builder = MessageBuilder.Friend(uint.Parse(message.Uin)).FriendName(message.Name);
-        BuildMessages(builder, message.Content);
+        BuildMessages(builder, message.Content, message.MessageStyle);
 
         return builder;
     }
@@ -66,7 +67,7 @@ public partial class MessageCommon
         var builder = message.MessageType == "private" || message.GroupId == null
             ? MessageBuilder.Friend(message.UserId ?? 0)
             : MessageBuilder.Group(message.GroupId.Value);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -76,7 +77,7 @@ public partial class MessageCommon
         var builder = message.MessageType == "private" || message.GroupId == null
             ? MessageBuilder.Friend(message.UserId ?? 0)
             : MessageBuilder.Group(message.GroupId.Value);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -92,10 +93,11 @@ public partial class MessageCommon
         if (message.AutoEscape == true)
         {
             builder.Text(message.Messages);
+            builder.Style(ConvertMessageStyle(message.MessageStyle));
         }
         else
         {
-            BuildMessages(builder, message.Messages);
+            BuildMessages(builder, message.Messages, message.MessageStyle);
         }
 
         return builder;
@@ -104,7 +106,7 @@ public partial class MessageCommon
     public MessageBuilder ParseChain(OneBotPrivateMessage message)
     {
         var builder = MessageBuilder.Friend(message.UserId);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -112,7 +114,7 @@ public partial class MessageCommon
     public MessageBuilder ParseChain(OneBotPrivateMessageSimple message)
     {
         var builder = MessageBuilder.Friend(message.UserId);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -123,10 +125,11 @@ public partial class MessageCommon
         if (message.AutoEscape == true)
         {
             builder.Text(message.Messages);
+            builder.Style(ConvertMessageStyle(message.MessageStyle));
         }
         else
         {
-            BuildMessages(builder, message.Messages);
+            BuildMessages(builder, message.Messages, message.MessageStyle);
         }
         return builder;
     }
@@ -135,7 +138,7 @@ public partial class MessageCommon
     public MessageBuilder ParseChain(OneBotGroupMessage message)
     {
         var builder = MessageBuilder.Group(message.GroupId);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -143,7 +146,7 @@ public partial class MessageCommon
     public MessageBuilder ParseChain(OneBotGroupMessageSimple message)
     {
         var builder = MessageBuilder.Group(message.GroupId);
-        BuildMessages(builder, message.Messages);
+        BuildMessages(builder, message.Messages, message.MessageStyle);
 
         return builder;
     }
@@ -157,7 +160,7 @@ public partial class MessageCommon
         }
         else
         {
-            BuildMessages(builder, message.Messages);
+            BuildMessages(builder, message.Messages, message.MessageStyle);
         }
         return builder;
     }
@@ -174,7 +177,7 @@ public partial class MessageCommon
         .Replace("&#93;", "]")
         .Replace("&amp;", "&");
 
-    private void BuildMessages(MessageBuilder builder, string message)
+    private void BuildMessages(MessageBuilder builder, string message, OnebotMessageStyle? messageStyle)
     {
         var matches = CQCodeRegex().Matches(message);
         int textStart = 0;
@@ -199,9 +202,11 @@ public partial class MessageCommon
         }
 
         if (textStart < message.Length) builder.Text(UnescapeText(message[textStart..]));
+
+        builder.Style(ConvertMessageStyle(messageStyle));
     }
 
-    private void BuildMessages(MessageBuilder builder, List<OneBotSegment> segments)
+    private void BuildMessages(MessageBuilder builder, List<OneBotSegment> segments, OnebotMessageStyle? messageStyle)
     {
         foreach (var segment in segments)
         {
@@ -211,9 +216,11 @@ public partial class MessageCommon
                 else Log.LogCQFailed(_logger, segment.Type, string.Empty);
             }
         }
+
+        builder.Style(ConvertMessageStyle(messageStyle));
     }
 
-    private void BuildMessages(MessageBuilder builder, OneBotSegment segment)
+    private void BuildMessages(MessageBuilder builder, OneBotSegment segment, OnebotMessageStyle? messageStyle)
     {
         if (_typeToSegment.TryGetValue(segment.Type, out var instance))
         {
@@ -226,6 +233,8 @@ public partial class MessageCommon
                 Log.LogCQFailed(_logger, segment.Type, string.Empty);
             }
         }
+
+        builder.Style(ConvertMessageStyle(messageStyle));
     }
 
     public List<MessageChain> BuildForwardChains(BotContext context, OneBotForward forward)
@@ -248,6 +257,21 @@ public partial class MessageCommon
         }
 
         return chains;
+    }
+
+    private static MessageStyle? ConvertMessageStyle(OnebotMessageStyle? style)
+    {
+        return style == null
+            ? null
+            : new MessageStyle
+            {
+                BubbleId = style.BubbleId,
+                PendantId = style.PendantId,
+                FontId = style.FontId,
+                FontEffectId = style.FontEffectId,
+                IsCsFontEffectEnabled = style.IsCsFontEffectEnabled,
+                BubbleDiyTextId = style.BubbleDiyTextId
+            };
     }
 
     private static partial class Log

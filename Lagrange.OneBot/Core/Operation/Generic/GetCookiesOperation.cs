@@ -1,9 +1,7 @@
 using System.Text.Json.Nodes;
 using Lagrange.Core;
-using Lagrange.Core.Common.Interface.Api;
 using Lagrange.OneBot.Core.Entity.Action;
 using Lagrange.OneBot.Core.Notify;
-using Lagrange.OneBot.Utility;
 
 namespace Lagrange.OneBot.Core.Operation.Generic;
 
@@ -14,7 +12,7 @@ public class GetCookiesOperation (TicketService ticket) : IOperation
     {
         if (payload?["domain"]?.ToString() is { } domain)
         {
-            string cookies = await ticket.GetCookies(domain);
+            var cookies = await ticket.GetCookies(domain);
             return new OneBotResult(new JsonObject { { "cookies", cookies } }, 0, "ok");
         }
         
