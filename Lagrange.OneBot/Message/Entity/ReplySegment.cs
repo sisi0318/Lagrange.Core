@@ -6,11 +6,13 @@ using Lagrange.OneBot.Database;
 namespace Lagrange.OneBot.Message.Entity;
 
 [Serializable]
-public partial class ReplySegment(uint messageId)
+public partial class ReplySegment(uint messageId, uint sequence = 0)
 {
-    public ReplySegment() : this(0) { }
+    public ReplySegment() : this(0,0) { }
 
     [JsonPropertyName("id")][CQProperty] public string MessageId { get; set; } = messageId.ToString();
+
+    [JsonPropertyName("seq")][CQProperty] public string Seq { get; set; } = sequence.ToString();
 }
 
 [SegmentSubscriber(typeof(ForwardEntity), "reply")]
@@ -46,7 +48,7 @@ public partial class ReplySegment : SegmentBase
             .Id);
 
         return !id.HasValue
-            ? new ReplySegment { MessageId = 0.ToString() }
-            : new ReplySegment { MessageId = id.Value.ToString() };
+            ? new ReplySegment { MessageId = 0.ToString() , Seq = forward.Sequence.ToString() }
+            : new ReplySegment { MessageId = id.Value.ToString() , Seq = forward.Sequence.ToString() };
     }
 }
