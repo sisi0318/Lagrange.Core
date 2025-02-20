@@ -47,7 +47,8 @@ public class GetMessageOperation(RealmHelper realm, MessageService service) : IO
                 MessageRecord.CalcMessageHash(chain.MessageId, chain.Sequence),
                 sender,
                 elements,
-                chain.Sequence
+                chain.Sequence,
+                chain.Appid
             );
 
             return new OneBotResult(response, 0, "ok");
