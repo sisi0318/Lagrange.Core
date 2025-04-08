@@ -115,6 +115,9 @@ public static class OperationExt
     public static Task<List<BotGroupRequest>?> FetchGroupRequests(this BotContext bot)
         => bot.ContextCollection.Business.OperationLogic.FetchGroupRequests();
 
+    public static Task<OperationResult<List<BotGroupRequest>>> FetchGroupRequestsWithResults(this BotContext bot)
+        => bot.ContextCollection.Business.OperationLogic.FetchGroupRequestsWithResult();
+
     /// <summary>
     ///
     /// </summary>
@@ -233,8 +236,11 @@ public static class OperationExt
             targetChain.Sequence, timestamp);
     }
 
-    public static Task<bool> UploadFriendFile(this BotContext bot, uint targetUin, FileEntity fileEntity)
-        => bot.ContextCollection.Business.OperationLogic.UploadFriendFile(targetUin, fileEntity);
+    public static async Task<bool> UploadFriendFile(this BotContext bot, uint targetUin, FileEntity fileEntity)
+        => (await UploadFriendFileWithResult(bot, targetUin, fileEntity)).IsSuccess;
+
+    public static Task<OperationResult<object>> UploadFriendFileWithResult(this BotContext bot, uint targetUin, FileEntity fileEntity)
+        => bot.ContextCollection.Business.OperationLogic.UploadFriendFileWithResult(targetUin, fileEntity);
 
     public static Task<bool> FriendPoke(this BotContext bot, uint friendUin)
         => bot.ContextCollection.Business.OperationLogic.FriendPoke(friendUin);

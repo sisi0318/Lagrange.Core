@@ -322,30 +322,48 @@ internal class OperationLogic : LogicBase
         return (retCode, retMsg);
     }
 
-    public Task<bool> GroupFSUpload(uint groupUin, FileEntity fileEntity, string targetDirectory)
+    public async Task<OperationResult<object>> GroupFSUploadWithResult(uint groupUin, FileEntity fileEntity, string targetDirectory)
     {
         try
         {
-            return FileUploader.UploadGroup(Collection, MessageBuilder.Group(groupUin).Build(), fileEntity, targetDirectory);
+            (int retcode, string message) = await FileUploader.UploadGroup(Collection, MessageBuilder.Group(groupUin).Build(), fileEntity, targetDirectory);
+            return new OperationResult<object>
+            {
+                Retcode = retcode,
+                Message = message
+            };
         }
-        catch
+        catch (Exception e)
         {
-            return Task.FromResult(false);
+            return new OperationResult<object>
+            {
+                Retcode = -99999,
+                Message = e.Message
+            };
         }
     }
 
-    public async Task<bool> UploadFriendFile(uint targetUin, FileEntity fileEntity)
+    public async Task<OperationResult<object>> UploadFriendFileWithResult(uint targetUin, FileEntity fileEntity)
     {
         string? uid = await Collection.Business.CachingLogic.ResolveUid(null, targetUin);
         var chain = new MessageChain(targetUin, Collection.Keystore.Uid ?? "", uid ?? "") { fileEntity };
 
         try
         {
-            return await FileUploader.UploadPrivate(Collection, chain, fileEntity);
+            (int retcode, string message) = await FileUploader.UploadPrivate(Collection, chain, fileEntity);
+            return new OperationResult<object>
+            {
+                Retcode = retcode,
+                Message = message
+            };
         }
-        catch
+        catch (Exception e)
         {
-            return false;
+            return new OperationResult<object>
+            {
+                Retcode = -99999,
+                Message = e.Message
+            };
         }
     }
 
@@ -394,11 +412,15 @@ internal class OperationLogic : LogicBase
         return events.Count != 0 && ((RecallFriendMessageEvent)events[0]).ResultCode == 0;
     }
 
-    public async Task<List<BotGroupRequest>?> FetchGroupRequests()
+    public async Task<OperationResult<List<BotGroupRequest>>> FetchGroupRequestsWithResult()
     {
         var fetchRequestsEvent = FetchGroupRequestsEvent.Create();
         var events = await Collection.Business.SendEvent(fetchRequestsEvent);
-        if (events.Count == 0) return null;
+        if (events.Count == 0) return new OperationResult<List<BotGroupRequest>>
+        {
+            Retcode = -1,
+            Message = "No Events"
+        };
 
         var resolved = events.Cast<FetchGroupRequestsEvent>().SelectMany(e => e.Events).ToList();
         var results = new List<BotGroupRequest>();
@@ -427,7 +449,11 @@ internal class OperationLogic : LogicBase
             ));
         }
 
-        return results;
+        return new OperationResult<List<BotGroupRequest>>
+        {
+            Retcode = 0,
+            Data = results
+        };
 
         async Task<uint> ResolveUid(string? uid)
         {
@@ -438,6 +464,8 @@ internal class OperationLogic : LogicBase
             return e.Count == 0 ? 0 : ((FetchUserInfoEvent)e[0]).UserInfo.Uin;
         }
     }
+
+    public async Task<List<BotGroupRequest>?> FetchGroupRequests() => (await FetchGroupRequestsWithResult()).Data;
 
     public async Task<List<BotFriendRequest>?> FetchFriendRequests()
     {

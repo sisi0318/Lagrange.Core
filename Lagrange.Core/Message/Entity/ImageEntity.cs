@@ -111,7 +111,7 @@ public class ImageEntity : IMessageEntity
                 // FriendUid = msgInfoBody.HashSum.BytesPbReserveC2c?.FriendUid,
                 H = index.Info.Height,
                 W = index.Info.Width,
-                IsGroup = extra.ExtBizInfo.Pic.BytesPbReserveTroop != null,
+                IsGroup = extra.ExtBizInfo.Pic.ToScene == 2,
                 Summary = string.IsNullOrEmpty(extra.ExtBizInfo.Pic.TextSummary) ? "[图片]" : extra.ExtBizInfo.Pic.TextSummary,
                 ImageUuid = index.FileUuid
             };
