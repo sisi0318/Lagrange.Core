@@ -30,8 +30,8 @@ public partial class MessageRecord : IRealmObject
 {
     public static readonly MessagePackSerializerOptions OPTIONS = MessagePackSerializerOptions.Standard
         .WithResolver(CompositeResolver.Create(
-            ContractlessStandardResolver.Instance,
-            new MessageEntityResolver()
+            new MessageEntityResolver(),
+            ContractlessStandardResolver.Instance
         ));
 
     [PrimaryKey]

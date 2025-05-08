@@ -5,6 +5,7 @@ using Lagrange.Core.Internal.Packets.Message.Action;
 using Lagrange.Core.Message;
 using Lagrange.Core.Utility.Extension;
 using ProtoBuf;
+using Lagrange.Core.Internal.Packets.Message; // Ensure the correct namespace for PushMsgBody
 
 namespace Lagrange.Core.Internal.Service.Message;
 
@@ -25,7 +26,7 @@ internal class GetGroupMessageService : BaseService<GetGroupMessageEvent>
             },
             Direction = true
         };
-        
+
         output = packet.Serialize();
         extraPackets = null;
         return true;
@@ -35,9 +36,8 @@ internal class GetGroupMessageService : BaseService<GetGroupMessageEvent>
         out GetGroupMessageEvent output, out List<ProtocolEvent>? extraEvents)
     {
         var payload = Serializer.Deserialize<SsoGetGroupMsgResponse>(input);
-        var chains = payload.Body.Messages.Select(x => MessagePacker.Parse(x)).ToList();
-        
-        output = GetGroupMessageEvent.Result(0, chains, payload.Body.Messages);
+        var chains = payload.Body.Messages?.Select(x => MessagePacker.Parse(x)).ToList() ?? new List<MessageChain>();
+        output = GetGroupMessageEvent.Result(0, chains, payload.Body.Messages ?? new List<PushMsgBody>());
         extraEvents = null;
         return true;
     }

@@ -6,9 +6,9 @@ namespace Lagrange.Core.Internal.Event.Message;
 internal class GetGroupMessageEvent : ProtocolEvent
 {
     public uint GroupUin { get; }
-    
+
     public uint StartSequence { get; }
-    
+
     public uint EndSequence { get; }
 
     public List<MessageChain> Chains { get; } = new();
@@ -27,10 +27,17 @@ internal class GetGroupMessageEvent : ProtocolEvent
         Chains = chains;
         PushMsgBodies = bodies;
     }
+    private GetGroupMessageEvent(int resultCode, List<MessageChain> chains) : base(resultCode)
+    {
+        Chains = chains;
+    }
 
     public static GetGroupMessageEvent Create(uint groupUin, uint startSequence, uint endSequence)
         => new(groupUin, startSequence, endSequence);
 
     public static GetGroupMessageEvent Result(int resultCode, List<MessageChain> chains, List<PushMsgBody> bodies)
         => new(resultCode, chains, bodies);
+
+    public static GetGroupMessageEvent Result(int resultCode, List<MessageChain> chains)
+        => new(resultCode, chains);
 }

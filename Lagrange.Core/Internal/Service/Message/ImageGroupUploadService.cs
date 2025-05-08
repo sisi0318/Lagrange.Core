@@ -23,10 +23,10 @@ internal class ImageGroupUploadService : BaseService<ImageGroupUploadEvent>
 
         string md5 = input.Entity.ImageStream.Value.Md5(true);
         string sha1 = input.Entity.ImageStream.Value.Sha1(true);
-
-        var buffer = new byte[1024]; // parse image header
-        int _ = input.Entity.ImageStream.Value.Read(buffer.AsSpan());
-        var type = ImageResolver.Resolve(buffer, out var size);
+        
+        // var buffer = new byte[1024]; // parse image header
+        // int _ = input.Entity.ImageStream.Value.Read(buffer.AsSpan());
+        var type = ImageResolver.Resolve(input.Entity.ImageStream.Value, out var size);
         string imageExt = type switch
         {
             ImageFormat.Jpeg => ".jpg",
@@ -34,7 +34,7 @@ internal class ImageGroupUploadService : BaseService<ImageGroupUploadEvent>
             ImageFormat.Gif => ".gif",
             ImageFormat.Webp => ".webp",
             ImageFormat.Bmp => ".bmp",
-            ImageFormat.Tiff => ".tiff",
+            // ImageFormat.Tiff => ".tiff",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
         input.Entity.ImageStream.Value.Position = 0;
@@ -94,8 +94,14 @@ internal class ImageGroupUploadService : BaseService<ImageGroupUploadEvent>
                     Pic = new PicExtBizInfo
                     {
                         BizType = (uint)input.Entity.SubType,
-                        TextSummary = input.Entity.Summary!,
-                        BytesPbReserveTroop = $"08{subType}180020004a00500062009201009a0100aa010c080012001800200028003a00".UnHex()
+                        // This is very confusing
+                        // so we only implement the default summary for sub type 1
+                        // and Tencent implements the others based on the default values.
+                        TextSummary = input.Entity.Summary ?? (input.Entity.SubType == 1 ? "[\u52a8\u753b\u8868\u60c5]" : null!),
+                        C2c = new PicExtBizInfoC2c
+                        {
+                            SubType = (uint)input.Entity.SubType
+                        }
                     },
                     Video = new VideoExtBizInfo { BytesPbReserve = Array.Empty<byte>() },
                     Ptt = new PttExtBizInfo
