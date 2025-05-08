@@ -65,6 +65,9 @@ public static class GroupExt
         => bot.SetGroupBotHD(targetUin, groupUin, null, null);
     public static Task<bool> SetGroupBotHD(this BotContext bot, uint targetUin, uint groupUin, string? data_1, string? data_2)
         => bot.ContextCollection.Business.OperationLogic.SetGroupBotHD(targetUin, groupUin, data_1, data_2);
+    
+    public static Task<bool> SetGroupBotHd2(this BotContext bot, uint appId, string buttonId, string buttonData)
+        => bot.ContextCollection.Business.OperationLogic.SetGroupBotHd2(appId, buttonId, buttonData);
 
     public static Task<bool> ImageExpires(this BotContext bot, string? url)
         => bot.ContextCollection.Business.OperationLogic.ImageExpires(url);

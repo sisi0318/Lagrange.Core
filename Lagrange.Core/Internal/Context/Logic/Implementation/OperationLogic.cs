@@ -191,6 +191,13 @@ internal class OperationLogic : LogicBase
         var events = await Collection.Business.SendEvent(muteBotEvent);
         return events.Count != 0 && ((GroupSetBothdEvent)events[0]).ResultCode == 0;
     }
+    
+    public async Task<bool> SetGroupBotHd2(uint appId, string buttonId, string buttonData)
+    {
+        var groupSetBotHd2Event = GroupSetBotHd2Event.Create(appId, buttonId, buttonData);
+        var events = await Collection.Business.SendEvent(groupSetBotHd2Event);
+        return events.Count != 0 && ((GroupSetBotHd2Event)events[0]).ResultCode == 0;
+    }
 
     public async Task<bool> ImageExpires(string? url)
     {
