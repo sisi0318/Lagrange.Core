@@ -79,7 +79,6 @@ internal class ServiceContext : ContextBase
                     result.AddRange(packets);
                 }
 
-                Collection.Log.LogDebug(Tag, $"Outgoing type: {attribute.PacketType}");
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
                 Collection.Log.LogDebug(Tag, $"Outgoing seq: {(uint)_sequenceProvider.GetNewSequence()}");
             }
@@ -98,9 +97,11 @@ internal class ServiceContext : ContextBase
         Collection.Log.LogDebug(Tag, $"SSOFrame Received: {packet.Command}");
         Collection.Log.LogDebug(Tag, $"SSOFrame Payload: {packet.Payload.Hex()}");
         
+            // Collection.Log.LogWarning(Tag, $"Unsupported SSOFrame Received: {packet.Command}");
+            // Collection.Log.LogDebug(Tag, $"Unsuccessful SSOFrame Payload: {packet.Payload.Hex()}");
         if (!_services.TryGetValue(packet.Command, out var service))
         {
-            // Collection.Log.LogWarning(Tag, $"Unsupported SSOFrame Received: {packet.Command}");
+            Collection.Log.LogInfo(Tag, $"Unsupported SSOFrame Received: {packet.Command}");
             // Collection.Log.LogDebug(Tag, $"Unsuccessful SSOFrame Payload: {packet.Payload.Hex()}");
             return result; // 没找到 滚蛋吧
         }

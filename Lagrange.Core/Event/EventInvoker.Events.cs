@@ -61,4 +61,8 @@ public partial class EventInvoker
     public event LagrangeEvent<GroupMemberEnterEvent>? OnGroupMemberEnterEvent;
 
     public event LagrangeEvent<PinChangedEvent>? OnPinChangedEvent;
+
+    public event LagrangeEvent<GroupRecallPokeEvent>? OnGroupRecallPokeEvent;
+
+    public event LagrangeEvent<FriendRecallPokeEvent>? OnFriendRecallPokeEvent;
 }

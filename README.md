@@ -56,9 +56,9 @@ Please use Lagrange.Core responsibly and in accordance with the law.
 
 # Lagrange.Core
 
-## Document
+## Document V1
 
-[Lagrange.Core Document](https://lagrangedev.github.io/Lagrange.Doc/Lagrange.Core/)
+[Lagrange.Core Document](https://lagrangedev.github.io/Lagrange.Doc/v1/Lagrange.Core/)
 
 ## Features List
 
@@ -87,7 +87,7 @@ Please use Lagrange.Core responsibly and in accordance with the law.
 
 ## Document
 
-[Lagrange.OneBot Document](https://lagrangedev.github.io/Lagrange.Doc/Lagrange.OneBot/)
+[Lagrange.OneBot Document](https://lagrangedev.github.io/Lagrange.Doc/v1/Lagrange.OneBot/)
 
 [Docker guide](Docker.md)
 

@@ -666,19 +666,11 @@ internal class OperationLogic : LogicBase
         var results = await Collection.Business.SendEvent(markAsReadEvent);
         return results.Count != 0 && ((MarkReadedEvent)results[0]).ResultCode == 0;
     }
-
-    public async Task<bool> FriendPoke(uint friendUin)
+    public async Task<bool> SendPoke(bool isGroup, uint peerUin, uint? targetUin = null)
     {
-        var friendPokeEvent = FriendPokeEvent.Create(friendUin);
-        var results = await Collection.Business.SendEvent(friendPokeEvent);
-        return results.Count != 0 && ((FriendPokeEvent)results[0]).ResultCode == 0;
-    }
-
-    public async Task<bool> GroupPoke(uint groupUin, uint friendUin)
-    {
-        var friendPokeEvent = GroupPokeEvent.Create(friendUin, groupUin);
-        var results = await Collection.Business.SendEvent(friendPokeEvent);
-        return results.Count != 0 && ((FriendPokeEvent)results[0]).ResultCode == 0;
+        var pokeEvent = PokeEvent.Create(isGroup, peerUin, targetUin);
+        var results = await Collection.Business.SendEvent(pokeEvent);
+        return results.Count != 0 && results[0].ResultCode == 0;
     }
 
     public async Task<bool> SetEssenceMessage(uint groupUin, uint sequence, uint random)
@@ -999,5 +991,25 @@ internal class OperationLogic : LogicBase
 
         var result = (MediaDownloadEvent)results[0];
         return (result.ResultCode, result.Message, result.Url);
+    }
+
+    public async Task<(int Code, string Message)> GroupRecallPoke(ulong groupUin, ulong messageSequence, ulong messageTime, ulong tipsSeqId)
+    {
+        var @event = RecallPokeEvent.Create(isGroup: true, groupUin, messageSequence, messageTime, tipsSeqId);
+        var results = await Collection.Business.SendEvent(@event);
+        if (results.Count == 0) return (-1, "No Result");
+
+        var result = (RecallPokeEvent)results[0];
+        return (result.ResultCode, result.Message);
+    }
+
+    public async Task<(int Code, string Message)> FriendRecallPoke(ulong peerUin, ulong messageSequence, ulong messageTime, ulong tipsSeqId)
+    {
+        var @event = RecallPokeEvent.Create(isGroup: false, peerUin, messageSequence, messageTime, tipsSeqId);
+        var results = await Collection.Business.SendEvent(@event);
+        if (results.Count == 0) return (-1, "No Result");
+
+        var result = (RecallPokeEvent)results[0];
+        return (result.ResultCode, result.Message);
     }
 }
