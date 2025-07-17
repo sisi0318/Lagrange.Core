@@ -20,6 +20,8 @@ public class RecordEntity : IMessageEntity
 
     public string AudioName { get; set; } = string.Empty;
 
+    public uint Type { get; set; } = 0;
+
     [Obsolete]
     public int AudioSize { get; }
 
@@ -51,6 +53,8 @@ public class RecordEntity : IMessageEntity
 
     public RecordEntity(string filePath, int audioLength = 0) : this(File.ReadAllBytes(filePath), audioLength) { }
 
+    public RecordEntity(string filePath, int audioLength = 0, uint type = 1) : this(File.ReadAllBytes(filePath), audioLength, type) { }
+
     public RecordEntity(byte[] file, int audioLength = 0)
     {
         // We should first determine whether the parameters are valid
@@ -58,6 +62,16 @@ public class RecordEntity : IMessageEntity
 
         AudioStream = new Lazy<Stream>(() => new MemoryStream(file));
         AudioLength = audioLength;
+    }
+
+    public RecordEntity(byte[] file, int audioLength = 0, uint type = 1)
+    {
+        // We should first determine whether the parameters are valid
+        if (file == null) throw new ArgumentNullException(nameof(file));
+
+        AudioStream = new Lazy<Stream>(() => new MemoryStream(file));
+        AudioLength = audioLength;
+        Type = type;
     }
 
     internal RecordEntity(string audioUuid, string audioName, byte[] audioMd5)

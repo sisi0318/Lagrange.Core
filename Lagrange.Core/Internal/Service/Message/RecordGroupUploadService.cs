@@ -19,7 +19,7 @@ internal class RecordGroupUploadService : BaseService<RecordGroupUploadEvent>
         BotDeviceInfo device, out Span<byte> output, out List<Memory<byte>>? extraPackets)
     {
         if (input.Entity.AudioStream is null) throw new Exception();
-        
+
         string md5 = input.Entity.AudioStream.Value.Md5(true);
         string sha1 = input.Entity.AudioStream.Value.Sha1(true);
 
@@ -79,7 +79,7 @@ internal class RecordGroupUploadService : BaseService<RecordGroupUploadEvent>
                     Ptt = new PttExtBizInfo
                     {
                         BytesReserve = Array.Empty<byte>(),
-                        BytesPbReserve = new byte[] { 0x08, 0x00, 0x38, 0x00 },
+                        BytesPbReserve = new byte[] { 0x08, 0x00, 0x38, 0x00, 0x48, (byte)input.Entity.Type },
                         BytesGeneralFlags = new byte[] { 0x9a, 0x01, 0x07, 0xaa, 0x03, 0x04, 0x08, 0x08, 0x12, 0x00 }
                     }
                 },
@@ -100,7 +100,7 @@ internal class RecordGroupUploadService : BaseService<RecordGroupUploadEvent>
         var packet = Serializer.Deserialize<OidbSvcTrpcTcpBase<NTV2RichMediaResp>>(input);
         var upload = packet.Body.Upload;
         var compat = Serializer.Deserialize<RichText>(upload.CompatQMsg.AsSpan());
-        
+
         output = RecordGroupUploadEvent.Result((int)packet.ErrorCode, upload.MsgInfo, upload.UKey, upload.IPv4s, upload.SubFileInfos, compat);
         extraEvents = null;
         return true;

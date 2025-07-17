@@ -84,7 +84,7 @@ public sealed class MessageBuilder
         return this;
     }
 
-        public MessageBuilder Text(string text, string title, string desc, string picurl)
+    public MessageBuilder Text(string text, string title, string desc, string picurl)
     {
         var textEntity = new TextEntity(text, title, desc, picurl);
         _chain.Add(textEntity);
@@ -170,7 +170,7 @@ public sealed class MessageBuilder
 
         return this;
     }
-    
+
     /// <summary>
     /// Add a xml entity (with custom serviceId) to the message chain (card message)
     /// </summary>
@@ -230,9 +230,9 @@ public sealed class MessageBuilder
     /// </summary>
     /// <param name="file">The audio file that has already been converted to SilkCodec</param>
     /// <param name="audioLength">The length of the audio file that directly shown</param>
-    public MessageBuilder Record(byte[] file, int audioLength = 0)
+    public MessageBuilder Record(byte[] file, int audioLength = 0, uint type = 0)
     {
-        var recordEntity = new RecordEntity(file, audioLength);
+        var recordEntity = new RecordEntity(file, audioLength, type);
         _chain.Add(recordEntity);
 
         return this;
@@ -243,9 +243,9 @@ public sealed class MessageBuilder
     /// </summary>
     /// <param name="filePath">The audio file that has already been converted to SilkCodec</param>
     /// <param name="audioLength">The length of the audio file that directly shown</param>
-    public MessageBuilder Record(string filePath, int audioLength = 0)
+    public MessageBuilder Record(string filePath, int audioLength = 0, uint type = 0)
     {
-        var recordEntity = new RecordEntity(filePath, audioLength);
+        var recordEntity = new RecordEntity(filePath, audioLength, type);
         _chain.Add(recordEntity);
 
         return this;

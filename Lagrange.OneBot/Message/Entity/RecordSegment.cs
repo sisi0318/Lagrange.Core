@@ -8,13 +8,15 @@ using Lagrange.OneBot.Utility;
 namespace Lagrange.OneBot.Message.Entity;
 
 [Serializable]
-public partial class RecordSegment(string url)
+public partial class RecordSegment(string url, uint type = 0)
 {
-    public RecordSegment() : this("") { }
+    public RecordSegment() : this("", 0) { }
 
     [JsonPropertyName("file")][CQProperty] public string File { get; set; } = url;
 
     [JsonPropertyName("url")] public string Url { get; set; } = url;
+
+    [JsonPropertyName("type")] public uint Type { get; set; } = type;
 }
 
 [SegmentSubscriber(typeof(RecordEntity), "record")]
@@ -25,7 +27,7 @@ public partial class RecordSegment : SegmentBase
         if (segment is RecordSegment recordSegment and not { File: "" } && CommonResolver.Resolve(recordSegment.File) is { } record)
         {
             byte[] silk = ConvertFormat(record, out double time);
-            builder.Record(silk, (int)Math.Ceiling(time));
+            builder.Record(silk, (int)Math.Ceiling(time), recordSegment.Type);
         }
     }
 
