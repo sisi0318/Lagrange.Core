@@ -68,7 +68,7 @@ public class ForwardEntity : IMessageEntity
             {
                 Text = new Text
                 {
-                    Str = "not null",
+                    Str = " ",
                     PbReserve = ProtoExt.SerializeToBytes(new MentionExtra
                     {
                         Type = 2,
