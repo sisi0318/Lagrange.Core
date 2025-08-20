@@ -20,23 +20,33 @@ public class GetMessageOperation(RealmHelper realm, MessageService service) : IO
     {
         if (payload.Deserialize<OneBotGetMessage>(SerializerOptions.DefaultOptions) is { } getMsg)
         {
-            var chain = realm.Do<MessageChain>(realm => realm.All<MessageRecord>().First(record => record.Id == getMsg.MessageId));
+            // 在一个 Realm 事务中完成所有操作，避免"closed realm"异常
+            var chain = realm.Do<MessageChain?>(realm => {
+                var record = realm.All<MessageRecord>().FirstOrDefault(record => record.Id == getMsg.MessageId);
+                if (record == null) return null;
+                return (MessageChain)record;
+            });
+            
+            if (chain == null)
+            {
+                return new OneBotResult(null, 1, $"消息ID {getMsg.MessageId} 未找到");
+            }
 
             OneBotSender sender = chain.Type switch
             {
-                MessageChain.MessageType.Group => new(
-                    chain.FriendUin,
-                    (await context.FetchMembers((uint)chain.GroupUin!))
-                        .First(member => member.Uin == chain.FriendUin)
-                        .MemberName
-                ),
+                MessageChain.MessageType.Group =>
+                    new(
+                        chain.FriendUin,
+                        (await context.FetchMembers((uint)chain.GroupUin!))
+                            .FirstOrDefault(member => member.Uin == chain.FriendUin)?.MemberName ?? string.Empty
+                    ),
                 MessageChain.MessageType.Temp => new(chain.FriendUin, string.Empty),
-                MessageChain.MessageType.Friend => new(
-                    chain.FriendUin,
-                    (await context.FetchFriends())
-                        .First(friend => friend.Uin == chain.FriendUin)
-                        .Nickname
-                ),
+                MessageChain.MessageType.Friend =>
+                    new(
+                        chain.FriendUin,
+                        (await context.FetchFriends())
+                            .FirstOrDefault(friend => friend.Uin == chain.FriendUin)?.Nickname ?? string.Empty
+                    ),
                 _ => throw new NotImplementedException(),
             };
 

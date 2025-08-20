@@ -99,6 +99,7 @@ public partial class MessageRecord : IRealmObject
                 MessageType.Friend => chain.TargetUin,
                 _ => throw new NotSupportedException(),
             },
+            Appid = chain.Appid,
             Style = chain.Style != null ? (MessageStyleRecord)chain.Style : null,
             Entities = stream.ToArray(),
         };
