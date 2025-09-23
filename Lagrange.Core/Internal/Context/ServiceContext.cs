@@ -81,6 +81,7 @@ internal class ServiceContext : ContextBase
 
                 Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame: {attribute.Command}");
                 Collection.Log.LogDebug(Tag, $"Outgoing seq: {(uint)_sequenceProvider.GetNewSequence()}");
+                Collection.Log.LogDebug(Tag, $"Outgoing SSOFrame Payload: {binary.Hex()}");
             }
         }
 
@@ -115,6 +116,7 @@ internal class ServiceContext : ContextBase
             if (extraEvents != null) result.AddRange(extraEvents);
 
             Collection.Log.LogDebug(Tag, $"Incoming SSOFrame: {packet.Command}");
+            // Collection.Log.LogDebug(Tag, $"Incoming SSOFrame Payload: {packet.Payload.Hex()}");
         }
 
         return result;
