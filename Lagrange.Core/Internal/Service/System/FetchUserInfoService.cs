@@ -75,7 +75,7 @@ internal class FetchUserInfoService : BaseService<FetchUserInfoEvent>
                 Uid = input.Uid,
                 Field2 = 0,
                 Keys = _keys
-            }, 0xfe1, 8).Serialize();
+            }, 0xfe1, 2).Serialize();
         extraPackets = null;
         return true;
     }
