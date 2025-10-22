@@ -70,7 +70,7 @@ public partial class MessageRecord : IRealmObject
     public int AppidInt { get; set; }
     public uint Appid { get => (uint)AppidInt; set => AppidInt = (int)value; }
 
-    public static int CalcMessageHash(ulong msgId, uint seq)
+    public static int CalcMessageHash(ulong msgId, ulong seq)
     {
         return ((ushort)seq << 16) | (ushort)msgId;
     }

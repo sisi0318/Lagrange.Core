@@ -52,7 +52,7 @@ public partial class ReplySegment : SegmentBase
         {
             id = Realm.Do(realm => realm.All<MessageRecord>()
                 .FirstOrDefault(record => record.FromUinLong == chain.FriendUin
-                    && record.ClientSequenceLong == forward.ClientSequence)?
+                    && record.ClientSequenceLong == (long)forward.ClientSequence)?
                 .Id);
         }
 
