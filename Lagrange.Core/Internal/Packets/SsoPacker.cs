@@ -18,7 +18,7 @@ internal static class SsoPacker
     {
         var writer = new BinaryPacket();
 
-        var sign = signProvider.Sign(packet.Command, packet.Sequence, packet.Payload.ToArray(), out var extra, out var token);
+        var sign = signProvider.Sign(packet.Command, packet.Sequence, packet.Payload.ToArray(), keystore.Uin, out var extra, out var token);
         var signature = new SsoReserveFields
         {
             SecInfo = sign == null ? null : new SsoSecureInfo

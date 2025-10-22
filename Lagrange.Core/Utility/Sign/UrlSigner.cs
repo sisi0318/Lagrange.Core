@@ -17,7 +17,7 @@ internal class UrlSigner : SignProvider
         _signServer = url;
     }
 
-    public override byte[]? Sign(string cmd, uint seq, byte[] body, out byte[]? e, out string? t)
+    public override byte[]? Sign(string cmd, uint seq, byte[] body,uint uin, out byte[]? e, out string? t)
     {
 
         e = null;
@@ -34,7 +34,8 @@ internal class UrlSigner : SignProvider
             {
                 { "cmd", cmd },
                 { "seq", seq },
-                { "src", Convert.ToHexString(body) }
+                { "src", Convert.ToHexString(body) },
+                { "uin", uin }
             })
         };
 

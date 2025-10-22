@@ -61,7 +61,7 @@ public class OneBotSigner : SignProvider
         version = _info.CurrentVersion;
     }
 
-    public override byte[]? Sign(string cmd, uint seq, byte[] body, [UnscopedRef] out byte[]? e, [UnscopedRef] out string? t)
+    public override byte[]? Sign(string cmd, uint seq, byte[] body, uint uin, [UnscopedRef] out byte[]? e, [UnscopedRef] out string? t)
     {
         e = null;
         t = null;
@@ -77,7 +77,8 @@ public class OneBotSigner : SignProvider
             {
                 { "cmd", cmd },
                 { "seq", seq },
-                { "src", Convert.ToHexString(body) }
+                { "src", Convert.ToHexString(body) },
+                { "uin", uin }
             })
         };
 

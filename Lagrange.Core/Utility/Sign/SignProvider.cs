@@ -50,5 +50,5 @@ public abstract class SignProvider
         "OidbSvcTrpcTcp.0x929b_0"
     };
 
-    public abstract byte[]? Sign(string cmd, uint seq, byte[] body, out byte[]? ver, out string? token);
+    public abstract byte[]? Sign(string cmd, uint seq, byte[] body, uint uin, out byte[]? ver, out string? token);
 }

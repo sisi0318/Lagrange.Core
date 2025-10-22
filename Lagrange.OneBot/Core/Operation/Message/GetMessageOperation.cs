@@ -20,11 +20,10 @@ public class GetMessageOperation(RealmHelper realm, MessageService service) : IO
     {
         if (payload.Deserialize<OneBotGetMessage>(SerializerOptions.DefaultOptions) is { } getMsg)
         {
-            // 在一个 Realm 事务中完成所有操作，避免"closed realm"异常
-            var chain = realm.Do<MessageChain?>(realm => {
+            var chain = realm.Do<MessageChain?>(realm =>
+            {
                 var record = realm.All<MessageRecord>().FirstOrDefault(record => record.Id == getMsg.MessageId);
-                if (record == null) return null;
-                return (MessageChain)record;
+                return record != null ? (MessageChain)record : null;
             });
             
             if (chain == null)
