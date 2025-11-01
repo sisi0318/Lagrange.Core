@@ -43,7 +43,7 @@ internal class OperationLogic : LogicBase
 
     public async Task<MessageResult> SendMessage(MessageChain chain)
     {
-        uint clientSeq = chain.ClientSequence;
+        ulong clientSeq = chain.ClientSequence;
         ulong messageId = chain.MessageId;
 
         var sendMessageEvent = SendMessageEvent.Create(chain);
@@ -58,7 +58,7 @@ internal class OperationLogic : LogicBase
     
     public async Task<MessageResult> SendMessage(MessageChain chain, PushMsgBody pushMsgBody)
     {
-        uint clientSeq = chain.ClientSequence;
+        ulong clientSeq = chain.ClientSequence;
         ulong messageId = chain.MessageId;
         
         var sendMessageEvent = SendMessageEvent.Create(chain, pushMsgBody);
@@ -73,7 +73,7 @@ internal class OperationLogic : LogicBase
     
     public async Task<MessageResult> SendMessage(MessageChain chain, byte[] hexMessageElems)
     {
-        uint clientSeq = chain.ClientSequence;
+        ulong clientSeq = chain.ClientSequence;
         ulong messageId = chain.MessageId;
         var body = new MessageBody { RichText = Serializer.Deserialize<RichText>(new MemoryStream(hexMessageElems)) };
         
@@ -660,7 +660,7 @@ internal class OperationLogic : LogicBase
         return results.Count != 0 ? ((MultiMsgUploadEvent)results[0]).ResId : null;
     }
 
-    public async Task<bool> MarkAsRead(uint groupUin, string? targetUid, uint startSequence, uint time)
+    public async Task<bool> MarkAsRead(uint groupUin, string? targetUid, ulong startSequence, uint time)
     {
         var markAsReadEvent = MarkReadedEvent.Create(groupUin, targetUid, startSequence, time);
         var results = await Collection.Business.SendEvent(markAsReadEvent);
@@ -673,14 +673,14 @@ internal class OperationLogic : LogicBase
         return results.Count != 0 && results[0].ResultCode == 0;
     }
 
-    public async Task<bool> SetEssenceMessage(uint groupUin, uint sequence, uint random)
+    public async Task<bool> SetEssenceMessage(uint groupUin, ulong sequence, uint random)
     {
         var setEssenceMessageEvent = SetEssenceMessageEvent.Create(groupUin, sequence, random);
         var results = await Collection.Business.SendEvent(setEssenceMessageEvent);
         return results.Count != 0 && ((SetEssenceMessageEvent)results[0]).ResultCode == 0;
     }
 
-    public async Task<bool> RemoveEssenceMessage(uint groupUin, uint sequence, uint random)
+    public async Task<bool> RemoveEssenceMessage(uint groupUin, ulong sequence, uint random)
     {
         var removeEssenceMessageEvent = RemoveEssenceMessageEvent.Create(groupUin, sequence, random);
         var results = await Collection.Business.SendEvent(removeEssenceMessageEvent);
