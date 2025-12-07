@@ -47,7 +47,8 @@ public abstract class SignProvider
         "QQLBSShareSvc.room_operation",
         "OidbSvcTrpcTcp.0xdc2_34",
         "QQAIOMediaSvc.share_trans_check",
-        "OidbSvcTrpcTcp.0x929b_0"
+        "OidbSvcTrpcTcp.0x929b_0",
+        "Heartbeat.Alive"
     };
 
     public abstract byte[]? Sign(string cmd, uint seq, byte[] body, uint uin, out byte[]? ver, out string? token);
