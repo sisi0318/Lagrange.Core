@@ -30,6 +30,8 @@ public class OneBotSigner : SignProvider
 
     private readonly string version;
 
+    private readonly string _guid = Guid.NewGuid().ToString("N");
+
     public OneBotSigner(IConfiguration config, ILogger<OneBotSigner> logger)
     {
         _configuration = config;
@@ -78,7 +80,8 @@ public class OneBotSigner : SignProvider
                 { "cmd", cmd },
                 { "seq", seq },
                 { "src", Convert.ToHexString(body) },
-                { "uin", uin }
+                { "uin", uin },
+                { "guid", _guid },
             })
         };
 
