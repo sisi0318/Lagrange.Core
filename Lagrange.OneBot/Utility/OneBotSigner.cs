@@ -18,7 +18,7 @@ public class OneBotSigner : SignProvider
 
     private readonly ILogger<OneBotSigner> _logger;
 
-    private const string Url = "https://sign.lagrangecore.org/api/sign/30366";
+    private const string Url = "https://sign.lagrangecore.org/api/sign/46494";
 
     private readonly string? _signServer;
 
@@ -30,12 +30,13 @@ public class OneBotSigner : SignProvider
 
     private readonly string version;
 
-    private readonly string _guid = Guid.NewGuid().ToString("N");
+    private readonly string _guid;
 
-    public OneBotSigner(IConfiguration config, ILogger<OneBotSigner> logger)
+    public OneBotSigner(IConfiguration config, ILogger<OneBotSigner> logger, BotDeviceInfo deviceInfo)
     {
         _configuration = config;
         _logger = logger;
+        _guid = deviceInfo.Guid.ToString("N");
 
         _signServer = string.IsNullOrEmpty(config["SignServerUrl"]) ? Url : config["SignServerUrl"];
         string? signProxyUrl = config["SignProxyUrl"]; // Only support HTTP proxy

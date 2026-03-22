@@ -28,7 +28,7 @@ internal static class SsoNTLoginCommon
                 },
                 Version = new SsoNTLoginVersion
                 {
-                    KernelVersion = device.KernelVersion,
+                    KernelVersion = appInfo.CurrentVersion,
                     AppId = appInfo.AppId,
                     PackageName = appInfo.PackageName
                 },

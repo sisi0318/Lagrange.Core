@@ -45,10 +45,16 @@ internal class MultiMsgUploadService : BaseService<MultiMsgUploadEvent>
             },
             Settings = new LongMsgSettings
             {
-                Field1 = 4,
-                Field2 = 1,
-                Field3 = 7,
-                Field4 = 0
+                SubCmd = 4,
+                ClientType = 1,
+                Platform = appInfo.Os switch
+                {
+                    "Windows" => 3,
+                    "Linux" => 6,
+                    "Mac" => 7,
+                    _ => 0
+                },
+                ProxyType = 0
             }
         };
 

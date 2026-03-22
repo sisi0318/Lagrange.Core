@@ -42,19 +42,19 @@ public class BotAppInfo
         Os = "Linux",
         Kernel = "Linux",
         VendorOs = "linux",
-        CurrentVersion = "3.2.15-30366",
+        CurrentVersion = "3.2.26-46494",
         MiscBitmap = 32764,
         PtVersion = "2.0.0",
         SsoVersion = 19,
         PackageName = "com.tencent.qq",
         WtLoginSdk = "nt.wtlogin.0.0.1",
         AppId = 1600001615,
-        SubAppId = 537258424,
+        SubAppId = 537345891,
         AppIdQrCode = 13697054,
-        AppClientVersion = 30366,        
+        AppClientVersion = 46494,        
         MainSigMap = 169742560,
         SubSigMap = 0,
-        NTLoginType = 1
+        NTLoginType = 7
     };
     
     private static readonly BotAppInfo MacOs = new()
@@ -83,20 +83,20 @@ public class BotAppInfo
         Os = "Windows",
         Kernel = "Windows_NT",
         VendorOs = "win32",
-        CurrentVersion = "9.9.2-15962",
+        CurrentVersion = "9.9.26-44563",
         PtVersion = "2.0.0",
         MiscBitmap = 32764,
         SsoVersion = 23,
         PackageName = "com.tencent.qq",
         WtLoginSdk = "nt.wtlogin.0.0.1",
         AppId = 1600001604,
-        SubAppId = 537138217,
-        AppIdQrCode = 537138217,
-        AppClientVersion = 13172,
+        SubAppId = 537337416,
+        AppIdQrCode = 537337416,
+        AppClientVersion = 44563,
         
         MainSigMap = 169742560,
         SubSigMap = 0,
-        NTLoginType = 5
+        NTLoginType = 4
     };
     
     public static readonly Dictionary<Protocols, BotAppInfo> ProtocolToAppInfo = new()

@@ -26,10 +26,16 @@ internal class MultiMsgDownloadService : BaseService<MultiMsgDownloadEvent>
             },
             Settings = new LongMsgSettings
             {
-                Field1 = 2,
-                Field2 = 0,
-                Field3 = 0,
-                Field4 = 0
+                SubCmd = 2,
+                ClientType = 1,
+                Platform = appInfo.Os switch
+                {
+                    "Windows" => 3,
+                    "Linux" => 6,
+                    "Mac" => 7,
+                    _ => 0
+                },
+                ProxyType = 0
             }
         };
 
